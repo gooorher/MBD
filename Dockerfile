@@ -1,10 +1,16 @@
-FROM amazoncorretto:21 
+FROM amazoncorretto:21 as build
 
 WORKDIR /docker/
 
 COPY ./Main.java .
 
 RUN javac ./Main.java
+
+FROM amazoncorretto:21 as execute
+
+WORKDIR /docker/
+
+COPY --from=build /docker/Main.class /docker/Main.class
 
 CMD [ "java", "Main" ]
 
